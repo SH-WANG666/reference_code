@@ -1,0 +1,8 @@
+name: Social Auth
+type: module
+description: Allows user authentication with different services.
+core_version_requirement: ^9.5 || ^10 || ^11
+package: Social
+configure: social_auth.integrations
+dependencies:
+  - social_api:social_api
