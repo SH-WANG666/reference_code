@@ -1,0 +1,5 @@
+cas server login to any service:
+  title: Allow CAS login to any service
+
+permission_callbacks:
+  - Drupal\cas_server\CasServerPermissions::servicePermissions

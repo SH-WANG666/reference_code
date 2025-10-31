@@ -1,0 +1,48 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for CAS Server module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\user\RoleInterface;
+
+/**
+ * Implements hook_cron().
+ */
+function cas_server_cron() {
+  $ticket_store = \Drupal::service('cas_server.storage');
+  $ticket_store->purgeUnvalidatedServiceTickets();
+  $ticket_store->purgeUnvalidatedProxyTickets();
+  $ticket_store->purgeExpiredProxyGrantingTickets();
+  $ticket_store->purgeExpiredTicketGrantingTickets();
+  $ticket_store->purgeExpiredLoginTickets();
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function cas_server_form_alter(
+  &$form,
+  FormStateInterface $form_state,
+  $form_id,
+) {
+
+  // Disable choosing "anonymous" as allowed to login to CAS services as it
+  // nonsensical. An anonymous user is not authenticated.
+  if ($form_id == 'user_admin_permissions') {
+    // Load all known services.
+    $services = \Drupal::entityTypeManager()
+      ->getStorage('cas_server_service')
+      ->loadMultiple();
+
+    foreach ($services as $service) {
+      $perm = "cas server login to {$service->id()} service";
+      $form['permissions'][$perm][RoleInterface::ANONYMOUS_ID]['#disabled'] = TRUE;
+    }
+
+    // Also disable on the "any service" permission.
+    $form['permissions']['cas server login to any service'][RoleInterface::ANONYMOUS_ID]['#disabled'] = TRUE;
+  }
+}

@@ -1,0 +1,140 @@
+cas_server.settings:
+  type: config_object
+  label: CAS Server settings
+  constraints:
+    FullyValidatable: ~
+  mapping:
+    ticket:
+      type: mapping
+      label: Ticket Timeout Settings
+      mapping:
+        login_ticket_timeout:
+          type: integer
+          label: Login Ticket Timeout (seconds)
+          constraints:
+            Range:
+              min: 0
+              # Max is 32 bit PHP_MAX_INT. Or approx 68 years.
+              max: 2147483647
+        service_ticket_timeout:
+          type: integer
+          label: Service Ticket Timeout (seconds)
+          constraints:
+            Range:
+              min: 0
+              max: 2147483647
+        proxy_ticket_timeout:
+          type: integer
+          label: Proxy Ticket Timeout (seconds)
+          constraints:
+            Range:
+              min: 0
+              max: 2147483647
+        proxy_granting_ticket_timeout:
+          type: integer
+          label: Proxy Granting Ticket Timeout (seconds)
+          constraints:
+            Range:
+              min: 0
+              max: 2147483647
+        ticket_granting_ticket_timeout:
+          type: integer
+          label: Ticket Granting Ticket Timeout (seconds)
+          constraints:
+            Range:
+              min: 0
+              max: 2147483647
+        ticket_granting_ticket_auth:
+          type: boolean
+          label: Whether to use a ticket granting cookie
+        ticket_username_attribute:
+          type: string
+          label: The user attribute to use for the username
+          constraints:
+            Choice:
+              - name
+              - mail
+              - uid
+    messages:
+      type: mapping
+      label: Custom Messages
+      mapping:
+        invalid_service:
+          type: string
+          label: Display Message for Invalid Service
+          nullable: true
+          constraints:
+            CasUserMessage: []
+        not_permitted:
+          type: string
+          label: Display Message for Service not permitted
+          nullable: true
+          constraints:
+            CasUserMessage: []
+        user_logout:
+          type: string
+          label: Display Message for User Logout
+          nullable: true
+          constraints:
+            CasUserMessage: []
+        logged_in:
+          type: string
+          label: Display Message for Logged In Users
+          nullable: true
+          constraints:
+            CasUserMessage: []
+    debugging:
+      type: mapping
+      label: Debugging Options
+      mapping:
+        log:
+          type: boolean
+          label: Enable debugging log
+    login:
+      type: mapping
+      label: Login Options
+      mapping:
+        username_attribute:
+          type: string
+          label: Login attribute to use for authentication
+          constraints:
+            Choice:
+              - name
+              - mail
+              - both
+        reset_password:
+          type: boolean
+          label: Show reset password link
+
+cas_server.cas_server_service.*:
+  type: config_entity
+  label: Service definitions
+  constraints:
+    FullyValidatable: ~
+  mapping:
+    label:
+      type: label
+      label: Name
+    id:
+      type: machine_name
+      label: Machine name
+    service:
+      type: string
+      label: Service URL pattern
+      constraints:
+        Length:
+          max: 255
+        CasServicePattern: []
+    sso:
+      type: boolean
+      label: Enable SSO
+    attributes:
+      type: sequence
+      label: Released attributes
+      nullable: true
+      constraints:
+        Callback: ['\Drupal\cas_server\ConfigHelper', 'validateAttributesConfig']
+      sequence:
+        type: string
+        constraints:
+          Callback: ['\Drupal\cas_server\ConfigHelper', 'validateAttributesConfig']

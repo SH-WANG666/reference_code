@@ -1,0 +1,9 @@
+entity.cas_server_service.collection:
+  route_name: entity.cas_server_service.collection
+  base_route: entity.cas_server_service.collection
+  title: Service definitions
+
+cas_server.settings:
+  route_name: cas_server.settings
+  base_route: entity.cas_server_service.collection
+  title: Settings

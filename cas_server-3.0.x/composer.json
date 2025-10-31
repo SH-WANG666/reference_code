@@ -1,0 +1,11 @@
+{
+    "name": "drupal/cas_server",
+    "type": "drupal-module",
+    "description": "Provides a CAS Server implementation that runs on Drupal.",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "support": {
+        "source": "https://git.drupalcode.org/project/cas_server",
+        "issues": "https://www.drupal.org/project/issues/cas_server"
+    }
+}

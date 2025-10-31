@@ -1,0 +1,33 @@
+# cspell: project specific dictionary
+
+# Module specific parlance.
+arrayvalue
+casservice
+creds
+pgtiou
+pgturls
+proxyable
+proxygranting
+returnto
+thisisapgtid
+ticketgranting
+uniqueid
+unproxyable
+untick
+webform
+
+# Words which are words but which aren't in the CSpell dictionary.
+unvalidated
+
+# Often random strings used in testing.
+adasdf
+adfasd
+adfasdf
+asdcx
+foadasd
+otcz
+subsea
+noël
+
+# False positive.
+Freturnto

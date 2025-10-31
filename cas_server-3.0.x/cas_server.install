@@ -1,0 +1,118 @@
+<?php
+
+/**
+ * @file
+ * The CAS Server module install file.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function cas_server_schema() {
+  $schema = [];
+
+  $schema['cas_server_ticket_store'] = [
+    'description' => "Store the CAS tickets that have been handed out.",
+    'fields' => [
+      'id' => [
+        'description' => 'The randomized data of the ticket.',
+        'type' => 'varchar_ascii',
+        'length' => 256,
+        'not null' => TRUE,
+      ],
+      'expiration' => [
+        'description' => 'Time after which the ticket is invalid.',
+        'type' => 'int',
+        'mysql_type' => 'datetime',
+        'pgsql_type' => 'timestamp',
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'description' => 'The user that this ticket is for.',
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'type' => [
+        'description' => 'A machine identifier for the type of ticket.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+      ],
+      'session' => [
+        'description' => 'The hashed session ID of the user requesting ticket.',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'user' => [
+        'description' => 'The username of the user requesting ticket.',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'service' => [
+        'description' => 'For service and proxy tickets, what service the ticket is valid for.',
+        'type' => 'text',
+        'size' => 'normal',
+        'not null' => FALSE,
+      ],
+      'renew' => [
+        'description' => 'Whether or not this ticket was generated with direct presentation of credentials.',
+        'type' => 'int',
+        'not null' => FALSE,
+      ],
+      'proxy_chain' => [
+        'description' => 'For proxy and proxy-granting tickets, the list of proxies for the ticket.',
+        'type' => 'text',
+        'length' => 4096,
+        'not null' => FALSE,
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+    'indexes' => [
+      'ticket' => ['id'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function cas_server_install() {
+
+  // Maintain original functionality that all users can access any CAS service
+  // so that new sites have less to initially configure.
+  user_role_grant_permissions(
+    'authenticated', [
+      'cas server login to any service',
+    ]
+  );
+}
+
+/**
+ * Implements hook_update_last_removed().
+ */
+function cas_server_update_last_removed() {
+  // Update 8001 and 8002 were removed, however the grant_service_permissions
+  // post_update replaces 8002 as it could possibly be missed due to the core
+  // version requirement previously being 9.1, and now 10.3.
+  return 8002;
+}
+
+/**
+ * Add login ticket timeout setting.
+ */
+function cas_server_update_9001() {
+
+  $editable_config = \Drupal::configFactory()
+    ->getEditable('cas_server.settings');
+  $editable_config->set('ticket.login_ticket_timeout', 900);
+  $editable_config->save(TRUE);
+
+  return t('Added Login Ticket Timeout setting, defaulting to 900 seconds.');
+}

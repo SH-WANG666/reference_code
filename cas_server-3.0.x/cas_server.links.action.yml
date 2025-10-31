@@ -1,0 +1,5 @@
+entity.cas_server_service.add_form:
+  route_name: entity.cas_server_service.add_form
+  title: Add Service definition
+  appears_on:
+    - entity.cas_server_service.collection

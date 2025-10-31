@@ -1,0 +1,5 @@
+entity.cas_server_service.collection:
+  title: CAS Server
+  parent: user.admin_index
+  description: Configure CAS Server service definitions.
+  route_name: entity.cas_server_service.collection

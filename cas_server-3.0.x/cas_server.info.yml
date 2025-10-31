@@ -1,0 +1,7 @@
+name: Central Authentication System (CAS) Server
+description: Provides a CAS Server implementation that runs on Drupal.
+type: module
+core_version_requirement: ^10.3 || ^11
+configure: cas_server.settings
+dependencies:
+  - drupal:user

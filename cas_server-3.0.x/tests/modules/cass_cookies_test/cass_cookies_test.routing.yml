@@ -1,0 +1,31 @@
+cass_cookies_test.cookie.tray:
+  path: /cass_cookies_test/cookie-tray
+  defaults:
+    _controller: \Drupal\cass_cookies_test\Controller\CookieOven::tray
+  requirements:
+    # Only used in test environment. No user input processed.
+    _access: 'TRUE'
+
+cass_cookies_test.cookie.bake:
+  path: /cass_cookies_test/cookie-bake
+  defaults:
+    _controller: \Drupal\cass_cookies_test\Controller\CookieOven::bake
+  requirements:
+    # Only used in test environment. No user input processed.
+    _access: 'TRUE'
+
+cass_cookies_test.cookie.eat:
+  path: /cass_cookies_test/cookie-eat
+  defaults:
+    _controller: \Drupal\cass_cookies_test\Controller\CookieOven::eat
+  requirements:
+    # Only used in test environment. No user input processed.
+    _access: 'TRUE'
+
+cass_cookies_test.user.uniqueid:
+  path: /cass_cookies_test/unique-id
+  defaults:
+    _controller: \Drupal\cass_cookies_test\Controller\UniqueId::show
+  requirements:
+    # Only used in test environment. No user input processed.
+    _access: 'TRUE'

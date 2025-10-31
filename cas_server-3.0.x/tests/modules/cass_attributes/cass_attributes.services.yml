@@ -1,0 +1,9 @@
+services:
+
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  cass_attributes.event_listener:
+    class: Drupal\cass_attributes\EventSubscriber\AttributesTesting
+  Drupal\cass_attributes\EventSubscriber\AttributesTesting: '@cass_attributes.event_listener'
